@@ -1,17 +1,41 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react'; // Removed unused imports
+import React, { useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation'; // Import useRouter
+import { supabase } from '@/lib/supabaseClient'; // Import supabase
 import LandingNavBar from '@/components/LandingNavBar';
-import * as THREE from 'three'; // Import Three.js
+import * as THREE from 'three';
 
 export default function LandingPage() {
   const heroAnimationRef = useRef<HTMLDivElement>(null);
   const staticAnimRef = useRef<HTMLDivElement>(null);
   const movingAnimRef = useRef<HTMLDivElement>(null);
   const examplesAnimRef = useRef<HTMLDivElement>(null);
+  const router = useRouter(); // Initialize useRouter
 
-  // Removed unused useState, useEffect, useRouter, supabase, Spinner, handleGetStarted
-  // as their functionality moved to LandingNavBar or is no longer needed here.
+  // NEW: Effect to check authentication and redirect to dashboard if logged in
+  useEffect(() => {
+    const checkUserSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        // User is logged in, redirect to dashboard
+        router.push('/dashboard');
+      }
+      // If no session, continue to render the landing page
+    };
+
+    checkUserSession();
+
+    // Optionally, listen for auth state changes if you want real-time redirection
+    // const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    //   if (session) {
+    //     router.push('/dashboard');
+    //   }
+    // });
+    // return () => {
+    //   subscription.unsubscribe();
+    // };
+  }, [router]); // Dependency array includes router
 
   const exampleProposals = [
     {
@@ -384,20 +408,14 @@ export default function LandingPage() {
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-50 to-purple-100">
       <LandingNavBar />
 
-      {/* Main content area. Removed pt-24 so hero can extend under navbar */}
       <main className="relative z-10 flex-grow pb-16">
-        {/* Hero Section - Animation in background, content centered. Adjusted min-h to extend under navbar */}
         <section className="relative flex flex-col items-center justify-center py-20 px-4 mb-20 bg-gradient-to-r from-blue-600 to-indigo-700 text-white overflow-hidden shadow-2xl min-h-[calc(100vh-64px)]">
           
-          {/* Three.js Animation Container - Full background of this section */}
-          {/* This div starts from top:0 of its parent section, which is now directly below the navbar */}
           <div ref={heroAnimationRef} className="absolute inset-0 z-0">
             {/* The Three.js canvas will be appended here */}
           </div>
-          {/* Optional: Add a subtle overlay to ensure text readability on top of animation */}
           <div className="absolute inset-0 z-10 bg-black opacity-10"></div> 
           
-          {/* Hero Content - Centered on top of animation */}
           <div className="relative z-20 max-w-4xl mx-auto text-center">
             <h1 className="text-5xl lg:text-6xl font-extrabold mb-6 leading-tight drop-shadow-lg">
               Generate Winning Proposals with AI
@@ -408,15 +426,11 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Features Section */}
-        <section className="relative px-8 mb-20"> {/* Made relative for absolutely positioned children */}
-          {/* Static Animation Container (Left Edge) - Adjusted width and height for bleed */}
+        <section className="relative px-8 mb-20">
           <div ref={staticAnimRef} className="absolute top-[-10%] bottom-[-10%] left-0 w-[30%] h-[120%] z-0 overflow-hidden"></div>
-          {/* Moving Animation Container (Right Edge) - Adjusted width and height for bleed */}
           <div ref={movingAnimRef} className="absolute top-[-10%] bottom-[-10%] right-0 w-[30%] h-[120%] z-0 overflow-hidden"></div>
           
-          {/* Content of Features Section (above animations) */}
-          <div className="container mx-auto max-w-6xl relative z-10"> {/* Content needs higher z-index */}
+          <div className="container mx-auto max-w-6xl relative z-10">
             <h2 className="text-5xl font-bold text-gray-900 text-center mb-16">
               How It Works
             </h2>
@@ -440,13 +454,11 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Example Proposals Section */}
-        <section className="relative px-8 mb-20"> {/* Made relative for animation background */}
-          {/* Animation Container for "See Our AI In Action" section - Adjusted height for bleed */}
+        <section className="relative px-8 mb-20">
           <div ref={examplesAnimRef} className="absolute top-[-5%] inset-x-0 h-[110%] z-0 overflow-hidden"></div>
-          <div className="absolute inset-0 z-10 bg-gradient-to-br from-blue-50 to-purple-100 opacity-20"></div> {/* Subtle overlay */}
+          <div className="absolute inset-0 z-10 bg-gradient-to-br from-blue-50 to-purple-100 opacity-20"></div>
 
-          <div className="container mx-auto max-w-6xl relative z-20"> {/* Content needs higher z-index */}
+          <div className="container mx-auto max-w-6xl relative z-20">
             <h2 className="text-5xl font-bold text-gray-900 text-center mb-16">
               See Our AI In Action
             </h2>
@@ -467,7 +479,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Call to Action Section */}
         <section className="text-center py-20 px-8 bg-gradient-to-r from-blue-600 to-purple-700 text-white shadow-inner">
           <div className="container mx-auto max-w-4xl">
             <h2 className="text-5xl font-bold mb-6 drop-shadow-md">Ready to Simplify Your Proposal Writing?</h2>
@@ -476,7 +487,6 @@ export default function LandingPage() {
         </section>
       </main>
 
-      {/* Simple Footer */}
       <footer className="bg-gray-800 text-white text-center p-6 text-sm">
         <div className="container mx-auto">
           &copy; {new Date().getFullYear()} AI Proposal Generator. All rights reserved.
