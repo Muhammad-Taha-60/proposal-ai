@@ -5,11 +5,9 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import Spinner from '@/components/Spinner';
 
-interface LandingNavBarProps {
-  // No explicit props needed if it handles its own auth check, but can be passed for consistency
-}
+// Removed empty interface declaration for LandingNavBarProps
 
-const LandingNavBar: React.FC<LandingNavBarProps> = () => {
+const LandingNavBar: React.FC = () => { // Changed to React.FC without props interface
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loadingAuth, setLoadingAuth] = useState(true);
@@ -32,8 +30,7 @@ const LandingNavBar: React.FC<LandingNavBarProps> = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-70 backdrop-blur-sm shadow-lg border-b border-gray-100 p-4"> {/* Changed bg-opacity-95 to bg-opacity-80 */}
-      
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-80 backdrop-blur-sm shadow-lg border-b border-gray-100 p-4">
       <div className="relative z-10 container mx-auto flex items-center justify-between">
         {/* Logo/App Title */}
         <div className="text-2xl font-extrabold text-gray-900 tracking-tight">

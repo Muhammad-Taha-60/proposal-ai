@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react'; // Added useCallback
+import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 import { User } from '@supabase/supabase-js';
@@ -32,14 +32,14 @@ export default function DashboardPage() {
   const [isLoadingProposals, setIsLoadingProposals] = useState(true);
   const [copyFeedback, setCopyFeedback] = useState<string | null>(null);
 
-  const router = useRouter(); // router is used, so no warning needed for it directly
+  const router = useRouter(); 
 
-  // Function to display a modal message
-  const displayModal = (title: string, message: string) => {
+  // Function to display a modal message - now wrapped in useCallback
+  const displayModal = useCallback((title: string, message: string) => {
     setModalTitle(title);
     setModalMessage(message);
     setShowModal(true);
-  };
+  }, []); // Empty dependency array means this function is stable
 
   // Function to fetch user's proposals from Supabase - wrapped in useCallback for dependency
   const fetchUserProposals = useCallback(async (userId: string) => {
@@ -111,8 +111,14 @@ export default function DashboardPage() {
 
       setUserPrompt(''); // Clear the input textarea
 
-    } catch (error: any) { // Type 'any' is okay for catch blocks
-      displayModal('Generation Error', error.message || 'An unexpected error occurred during proposal generation.');
+    } catch (error: unknown) { // Changed 'any' to 'unknown'
+        let errorMessage = 'An unexpected error occurred during proposal generation.';
+        if (error instanceof Error) {
+            errorMessage = error.message;
+        } else if (typeof error === 'object' && error !== null && 'message' in error && typeof (error as { message: string }).message === 'string') {
+            errorMessage = (error as { message: string }).message;
+        }
+        displayModal('Generation Error', errorMessage);
     } finally {
       setIsGenerating(false);
     }
@@ -295,7 +301,7 @@ export default function DashboardPage() {
                 </div>
               ) : userProposals.length === 0 ? (
                 <div className="flex-grow py-10 text-center text-gray-600 border border-dashed border-gray-300 rounded-lg p-6 bg-white">
-                  <p className="text-xl mb-4">You haven't generated any proposals yet.</p>
+                  <p className="text-xl mb-4">You haven&apos;t generated any proposals yet.</p>
                   <p className="text-md">Start by crafting your first one in the left column! ✨</p>
                 </div>
               ) : (

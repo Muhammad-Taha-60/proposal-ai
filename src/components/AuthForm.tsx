@@ -50,7 +50,7 @@ export default function AuthForm({ type, onSubmit, loading }: AuthFormProps) {
 
         {type === 'login' && (
           <p className="mt-6 text-center text-gray-600">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '} {/* Fixed apostrophe */}
             <a href="/signup" className="text-blue-600 hover:underline font-medium">
               Sign Up
             </a>

@@ -1,22 +1,17 @@
 'use client';
 
-import React, { useEffect, useRef, useState, useCallback } from 'react'; // Added useCallback
-import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabaseClient';
-import Spinner from '@/components/Spinner';
+import React, { useEffect, useRef, useState } from 'react'; // Removed unused imports
 import LandingNavBar from '@/components/LandingNavBar';
 import * as THREE from 'three'; // Import Three.js
 
 export default function LandingPage() {
-  // Removed states and functions for auth check and button logic, as it's now in LandingNavBar
-  // Removed router, isAuthenticated, loadingAuth, handleGetStarted
-  
   const heroAnimationRef = useRef<HTMLDivElement>(null);
   const staticAnimRef = useRef<HTMLDivElement>(null);
   const movingAnimRef = useRef<HTMLDivElement>(null);
   const examplesAnimRef = useRef<HTMLDivElement>(null);
 
-  // No need for useEffect for auth check here anymore, as LandingNavBar handles it.
+  // Removed unused useState, useEffect, useRouter, supabase, Spinner, handleGetStarted
+  // as their functionality moved to LandingNavBar or is no longer needed here.
 
   const exampleProposals = [
     {

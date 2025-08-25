@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { useRouter } from 'next/navigation';
-import Modal from '@/components/Modal';
+import Modal from '@/components/Modal'; // Import the Modal component
 import Spinner from '@/components/Spinner';
 
 export default function ForgotPasswordPage() {
@@ -12,7 +12,7 @@ export default function ForgotPasswordPage() {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [modalTitle, setModalTitle] = useState('');
-  const router = useRouter(); // 'router' is used, so no warning needed for it directly
+  const router = useRouter(); 
 
   const displayModal = (title: string, message: string) => {
     setModalTitle(title);
@@ -24,6 +24,10 @@ export default function ForgotPasswordPage() {
     setShowModal(false);
     setModalMessage('');
     setModalTitle('');
+    // If it was a successful signup message, redirect to login after closing modal
+    if (modalMessage.includes('successful')) { 
+        router.push('/login');
+    }
   };
 
   const handlePasswordReset = async (event: React.FormEvent) => {
@@ -51,7 +55,7 @@ export default function ForgotPasswordPage() {
             Forgot Password?
           </h2>
           <p className="text-gray-600 mb-6">
-            Enter your email address and we'll send you a link to reset your password.
+            Enter your email address and we&apos;ll send you a link to reset your password. {/* Fixed apostrophe */}
           </p>
           <form onSubmit={handlePasswordReset} className="flex flex-col space-y-5">
             <input
@@ -62,6 +66,7 @@ export default function ForgotPasswordPage() {
               className="px-5 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out"
               required
             />
+            {/* Removed the erroneous password input and state */}
             <button
               type="submit"
               className="bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 ease-in-out disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center"
