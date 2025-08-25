@@ -1,14 +1,16 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link'; // Import Link from next/link
 import Spinner from '@/components/Spinner';
 
+// Define the types for the component's props
 interface AuthFormProps {
-  type: 'login' | 'signup';
+  type: 'login' | 'signup'; // Explicitly define type as 'login' or 'signup'
   onSubmit: (email: string, password: string) => Promise<void>;
-  loading: boolean;
-  onGoogleLogin: () => Promise<void>;
-  googleLoading: boolean;
+  loading: boolean; // Loading state for email/password submission
+  onGoogleLogin: () => Promise<void>; // Function to handle Google login
+  googleLoading: boolean; // Loading state for Google login
 }
 
 export default function AuthForm({ type, onSubmit, loading, onGoogleLogin, googleLoading }: AuthFormProps) {
@@ -54,23 +56,23 @@ export default function AuthForm({ type, onSubmit, loading, onGoogleLogin, googl
         <>
           <p className="mt-6 text-center text-gray-600">
             Don&apos;t have an account?{' '}
-            <a href="/signup" className="text-blue-600 hover:underline font-medium">
+            <Link href="/signup" className="text-blue-600 hover:underline font-medium"> {/* Used Link */}
               Sign Up
-            </a>
+            </Link>
           </p>
           <div className="mt-2 text-center text-gray-600">
-            <a href="/forgot-password" className="text-blue-600 hover:underline font-medium">
+            <Link href="/forgot-password" className="text-blue-600 hover:underline font-medium"> {/* Used Link */}
               Forgot password?
-            </a>
+            </Link>
           </div>
         </>
       )}
       {type === 'signup' && (
         <p className="mt-6 text-center text-gray-600">
           Already have an account?{' '}
-          <a href="/login" className="text-blue-600 hover:underline font-medium">
+          <Link href="/login" className="text-blue-600 hover:underline font-medium"> {/* Used Link */}
             Log In
-          </a>
+          </Link>
         </p>
       )}
 
@@ -112,9 +114,9 @@ export default function AuthForm({ type, onSubmit, loading, onGoogleLogin, googl
 
       {/* Back to Home link */}
       <div className="mt-4 text-center">
-        <a href="/" className="text-gray-600 hover:underline text-sm">
+        <Link href="/" className="text-gray-600 hover:underline text-sm"> {/* Used Link */}
           Back to Home
-        </a>
+        </Link>
       </div>
     </div>
   );
