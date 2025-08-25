@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react'; // Removed unused imports
+import React, { useEffect, useRef } from 'react'; // Removed unused imports
 import LandingNavBar from '@/components/LandingNavBar';
 import * as THREE from 'three'; // Import Three.js
 
