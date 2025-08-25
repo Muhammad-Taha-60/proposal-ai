@@ -15,7 +15,13 @@ export default function SignupPage() {
 
   const handleSignup = async (email: string, password: string) => {
     setLoading(true);
-    const { error } = await supabase.auth.signUp({ email, password });
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/login`, // <-- NEW: Redirect to login after confirmation
+      },
+    });
     
     if (error) {
       setModalTitle('Sign Up Error');
