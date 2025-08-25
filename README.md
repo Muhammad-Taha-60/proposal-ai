@@ -34,8 +34,7 @@ It aims to streamline the proposal writing process, saving time and helping user
 
 ## Live Demo
 
-🚀 **[Access the Live Application Here](YOUR_VERCEL_DEPLOYMENT_URL)** 🚀
-*(Replace `YOUR_VERCEL_DEPLOYMENT_URL` with the actual URL from your Vercel deployment)*
+🚀 **[Access the Live Application Here](https://proposal-ai-mu.vercel.app)** 🚀
 
 ---
 
@@ -61,7 +60,7 @@ This initial version includes the following key functionalities:
     * [Tailwind CSS](https://tailwindcss.com/) (Styling Framework)
     * [Three.js](https://threejs.org/) (3D Graphics Library for background animations)
 * **Backend / API:**
-    * [Gemini API](https://ai.google.dev/) (for AI text generation)
+    * [GPT-4o API](https://ai.google.dev/) (for AI text generation)
     * [Next.js API Routes](https://nextjs.org/docs/api-routes/introduction) (for server-side AI calls)
 * **Authentication & Database:**
     * [Supabase](https://supabase.com/) (Authentication and PostgreSQL database)
@@ -97,7 +96,3 @@ Before you begin, ensure you have met the following requirements:
     # or
     yarn install
     ```
-
-### Environment Variables
-
-Create a `.env.local` file in the root of your project and add the following environment variables:
