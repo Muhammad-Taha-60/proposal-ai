@@ -12,7 +12,7 @@ export default function ForgotPasswordPage() {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [modalTitle, setModalTitle] = useState('');
-  const router = useRouter();
+  const router = useRouter(); // 'router' is used, so no warning needed for it directly
 
   const displayModal = (title: string, message: string) => {
     setModalTitle(title);
@@ -30,10 +30,8 @@ export default function ForgotPasswordPage() {
     event.preventDefault();
     setLoading(true);
 
-    // IMPORTANT CHANGE: Point redirectTo directly to your reset password page.
-    // Supabase will append the tokens as a hash automatically.
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`, // <-- SIMPLIFIED REDIRECT URL
+      redirectTo: `${window.location.origin}/reset-password`,
     });
 
     if (error) {

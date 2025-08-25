@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react'; // Added useCallback
 import { supabase } from '@/lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 import { User } from '@supabase/supabase-js';
@@ -32,7 +32,7 @@ export default function DashboardPage() {
   const [isLoadingProposals, setIsLoadingProposals] = useState(true);
   const [copyFeedback, setCopyFeedback] = useState<string | null>(null);
 
-  const router = useRouter();
+  const router = useRouter(); // router is used, so no warning needed for it directly
 
   // Function to display a modal message
   const displayModal = (title: string, message: string) => {
@@ -41,8 +41,8 @@ export default function DashboardPage() {
     setShowModal(true);
   };
 
-  // Function to fetch user's proposals from Supabase
-  const fetchUserProposals = async (userId: string) => {
+  // Function to fetch user's proposals from Supabase - wrapped in useCallback for dependency
+  const fetchUserProposals = useCallback(async (userId: string) => {
     setIsLoadingProposals(true);
     const { data, error } = await supabase
       .from('proposals')
@@ -57,7 +57,7 @@ export default function DashboardPage() {
       setUserProposals(data || []);
     }
     setIsLoadingProposals(false);
-  };
+  }, [displayModal]); // displayModal is a dependency
 
   // Handle generating and saving a proposal
   const handleGenerateProposal = async () => {
@@ -88,7 +88,7 @@ export default function DashboardPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`, // <--- NEW: Send the access token
+          'Authorization': `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({ userPrompt, selectedTone }),
       });
@@ -111,7 +111,7 @@ export default function DashboardPage() {
 
       setUserPrompt(''); // Clear the input textarea
 
-    } catch (error: any) {
+    } catch (error: any) { // Type 'any' is okay for catch blocks
       displayModal('Generation Error', error.message || 'An unexpected error occurred during proposal generation.');
     } finally {
       setIsGenerating(false);
@@ -153,7 +153,7 @@ export default function DashboardPage() {
         router.push('/login');
       } else {
         setUser(session.user);
-        fetchUserProposals(session.user.id);
+        fetchUserProposals(session.user.id); // Dependency fetchUserProposals is now stable due to useCallback
       }
       setIsLoadingAuth(false);
     };
@@ -172,7 +172,7 @@ export default function DashboardPage() {
     return () => {
       subscription.unsubscribe();
     };
-  }, [router]);
+  }, [router, fetchUserProposals]); // Added fetchUserProposals as dependency
 
   // Display loading screen while authentication status is being determined
   if (isLoadingAuth) {

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react'; // Added useCallback
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import Spinner from '@/components/Spinner';
@@ -8,31 +8,15 @@ import LandingNavBar from '@/components/LandingNavBar';
 import * as THREE from 'three'; // Import Three.js
 
 export default function LandingPage() {
-  const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loadingAuth, setLoadingAuth] = useState(true);
-  const heroAnimationRef = useRef<HTMLDivElement>(null); // Ref for the hero section's animation
-  const staticAnimRef = useRef<HTMLDivElement>(null); // Ref for the static animation (How It Works - Left)
-  const movingAnimRef = useRef<HTMLDivElement>(null); // Ref for the moving animation (How It Works - Right)
-  const examplesAnimRef = useRef<HTMLDivElement>(null); // Ref for "See Our AI In Action" animation
+  // Removed states and functions for auth check and button logic, as it's now in LandingNavBar
+  // Removed router, isAuthenticated, loadingAuth, handleGetStarted
+  
+  const heroAnimationRef = useRef<HTMLDivElement>(null);
+  const staticAnimRef = useRef<HTMLDivElement>(null);
+  const movingAnimRef = useRef<HTMLDivElement>(null);
+  const examplesAnimRef = useRef<HTMLDivElement>(null);
 
-  // Check if user is already authenticated
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        setIsAuthenticated(true);
-      }
-      setLoadingAuth(false);
-    });
-  }, []);
-
-  const handleGetStarted = () => {
-    if (isAuthenticated) {
-      router.push('/dashboard');
-    } else {
-      router.push('/signup');
-    }
-  };
+  // No need for useEffect for auth check here anymore, as LandingNavBar handles it.
 
   const exampleProposals = [
     {
